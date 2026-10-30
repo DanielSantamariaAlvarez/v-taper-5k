@@ -678,40 +678,40 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
   const afterPhoto = volatilePhotos[afterPhotoIndex] || null;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-5 sm:gap-8">
       {/* SECTION 1: Rapid Numerical Log & Evolution Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
         {/* Left 5 Cols: Numerical Entry Form */}
-        <div className="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6">
+        <div className="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
           <div className="flex items-center justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
                 1. Registro Numérico Rápido
               </span>
-              <h2 className="text-xl font-bold text-slate-100 mt-1">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-100 mt-1">
                 Peso y Medidas Corporales
               </h2>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
               <Ruler className="w-5 h-5" />
             </div>
           </div>
 
           <form onSubmit={handleMeasurementSubmit} className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <label className="flex flex-col gap-1.5 text-xs font-semibold text-slate-300">
-                Fecha de Medición
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 items-end">
+              <label className="flex flex-col justify-between gap-1.5 text-xs font-semibold text-slate-300">
+                <span>Fecha de Medición</span>
                 <input
                   type="date"
                   value={dateIso}
                   onChange={(e) => setDateIso(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 sm:px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-emerald-500"
                   required
                 />
               </label>
 
-              <label className="flex flex-col gap-1.5 text-xs font-semibold text-slate-300">
-                Peso Corporal (kg)
+              <label className="flex flex-col justify-between gap-1.5 text-xs font-semibold text-slate-300">
+                <span>Peso Corporal (kg)</span>
                 <input
                   type="number"
                   step="0.1"
@@ -719,13 +719,13 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                   max="200"
                   value={weightKg}
                   onChange={(e) => setWeightKg(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 sm:px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-emerald-500"
                   required
                 />
               </label>
 
-              <label className="flex flex-col gap-1.5 text-xs font-semibold text-slate-300">
-                Cintura / Ombligo (cm)
+              <label className="flex flex-col justify-between gap-1.5 text-xs font-semibold text-slate-300">
+                <span>Cintura (cm)</span>
                 <input
                   type="number"
                   step="0.1"
@@ -733,13 +733,13 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                   max="160"
                   value={waistCm}
                   onChange={(e) => setWaistCm(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 font-mono focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 sm:px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-amber-500"
                   required
                 />
               </label>
 
-              <label className="flex flex-col gap-1.5 text-xs font-semibold text-slate-300">
-                Pecho / Espalda Dorsal (cm)
+              <label className="flex flex-col justify-between gap-1.5 text-xs font-semibold text-slate-300">
+                <span>Pecho / Espalda (cm)</span>
                 <input
                   type="number"
                   step="0.1"
@@ -747,7 +747,7 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                   max="180"
                   value={chestBackCm}
                   onChange={(e) => setChestBackCm(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 sm:px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-emerald-500"
                   required
                 />
               </label>
@@ -794,19 +794,19 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
         </div>
 
         {/* Right 7 Cols: Interactive SVG Evolution Chart & History Log */}
-        <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
                 <TrendingUp className="w-4 h-4" />
                 Curva de Evolución Antropométrica
               </span>
-              <h3 className="text-xl font-bold text-slate-100 mt-1">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-100 mt-1">
                 Progreso de Medidas y Ratio en V
               </h3>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="grid grid-cols-2 sm:flex flex-wrap items-center gap-2">
               {CHART_METRIC_KEYS.map((metricKey) => {
                 const item = CHART_METRIC_CONFIG[metricKey];
                 const active = selectedMetric === metricKey;
@@ -876,42 +876,41 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
       </div>
 
       {/* SECTION 2: Private Local Folder Manager (RAM-ONLY PHOTOS, ZERO BROWSER STORAGE) */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-slate-800 pb-6">
-          <div className="flex flex-col gap-2">
+      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 border-b border-slate-800 pb-5 sm:pb-6">
+          <div className="flex flex-col gap-1.5 sm:gap-2">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-400">
-              <FolderLock className="w-4 h-4" />
-              2. Gestor de Carpeta Local Privada (File System Access API · RAM-Only)
+              <FolderLock className="w-4 h-4 shrink-0" />
+              <span>2. Gestor de Carpeta Privada (RAM-Only)</span>
             </div>
-            <h3 className="text-2xl font-bold text-slate-100">
+            <h3 className="text-lg sm:text-2xl font-bold text-slate-100">
               Privacidad Absoluta: Cero Fotos en Navegador
             </h3>
-            <p className="text-sm text-slate-400 max-w-3xl">
+            <p className="text-xs sm:text-sm text-slate-400 max-w-3xl">
               Las fotografías jamás se suben a servidores ni se guardan en{' '}
               <code className="text-slate-200">localStorage</code> o{' '}
-              <code className="text-slate-200">IndexedDB</code>. Se leen y escriben directamente en tu carpeta local de macOS y viven solo en memoria RAM volátil (<code className="text-emerald-400">URL.createObjectURL</code>).
+              <code className="text-slate-200">IndexedDB</code>. Viven solo en memoria RAM volátil (<code className="text-emerald-400">URL.createObjectURL</code>).
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 shrink-0">
             <button
               type="button"
               onClick={handleConnectLocalPhotoFolder}
-              className="inline-flex items-center gap-2.5 px-6 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-3.5 sm:px-6 sm:py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all"
             >
-              <FolderOpen className="w-4 h-4" />
-              Conectar Carpeta Local de Fotos
+              <FolderOpen className="w-4 h-4 shrink-0" />
+              <span>Conectar Carpeta Local de Fotos</span>
             </button>
 
             <button
               type="button"
               onClick={handleLockAndPurgeRamPhotos}
-              className="inline-flex items-center gap-2.5 px-5 py-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20 transition-all"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-3.5 sm:py-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20 transition-all"
             >
-              <Lock className="w-4 h-4" />
-              Bloquear y Limpiar Memoria
+              <Lock className="w-4 h-4 shrink-0" />
+              <span>Bloquear y Limpiar Memoria</span>
             </button>
-
             {/* Fallback directory input for non-Chromium browsers */}
             <input
               ref={fallbackDirInputRef}
@@ -998,22 +997,20 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
       </div>
 
       {/* SECTION 3 & 4: Webcam Studio with V-Taper Silhouette + Interactive Before vs. After Comparator */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
         {/* Left 6 Cols: Webcam with 5s Self-Timer, Consistency Guide & V-Taper Silhouette */}
-        <div className="lg:col-span-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6">
-          <div className="flex items-center justify-between">
+        <div className="lg:col-span-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
+          <div className="flex items-center justify-between gap-2">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-sky-400">
-                3. Cámara con Guía de Silueta y Guardado Directo en Disco
+                3. Cámara con Guía de Silueta y Guardado Directo
               </span>
-              <h3 className="text-xl font-bold text-slate-100 mt-1">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-100 mt-1">
                 Estudio Fotográfico V-Taper (Temporizador 5s)
               </h3>
             </div>
-            <Camera className="w-5 h-5 text-sky-400" />
+            <Camera className="w-5 h-5 text-sky-400 shrink-0" />
           </div>
-
-          {/* Pre-capture Consistency Tips */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -1084,11 +1081,11 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
           )}
 
           {/* Camera Action Controls */}
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             <button
               type="button"
               onClick={() => void handleToggleWebcam()}
-              className={`inline-flex items-center gap-2 px-5 py-3.5 rounded-xl font-bold text-xs transition-all ${
+              className={`inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-xs transition-all ${
                 isCameraOpen
                   ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
                   : 'bg-sky-500 hover:bg-sky-400 text-slate-950'
@@ -1111,28 +1108,27 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
               type="button"
               disabled={!isCameraOpen || cameraCountdown !== null}
               onClick={handleStartFiveSecondCaptureTimer}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 disabled:pointer-events-none text-slate-950 font-bold text-xs transition-all shadow-lg shadow-emerald-500/20"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 disabled:pointer-events-none text-slate-950 font-bold text-xs transition-all shadow-lg shadow-emerald-500/20"
             >
-              <Camera className="w-4 h-4" />
-              Capturar en 5s (Guardar YYYY-MM-DD_progreso.png)
+              <Camera className="w-4 h-4 shrink-0" />
+              <span>Capturar en 5s (Guardar PNG)</span>
             </button>
           </div>
         </div>
 
         {/* Right 6 Cols: Interactive Before vs. After Vertical Slider Comparator */}
-        <div className="lg:col-span-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6">
-          <div className="flex items-center justify-between">
+        <div className="lg:col-span-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
+          <div className="flex items-center justify-between gap-2">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
                 4. Comparador Interactivo &ldquo;Antes vs. Después&rdquo;
               </span>
-              <h3 className="text-xl font-bold text-slate-100 mt-1">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-100 mt-1">
                 Slider Deslizable de Transformación
               </h3>
             </div>
-            <SlidersHorizontal className="w-5 h-5 text-amber-400" />
+            <SlidersHorizontal className="w-5 h-5 text-amber-400 shrink-0" />
           </div>
-
           {volatilePhotos.length === 0 ? (
             <div className="aspect-[4/3] w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center text-center gap-3">
               <FolderOpen className="w-10 h-10 text-slate-600" />

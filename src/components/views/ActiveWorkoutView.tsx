@@ -550,50 +550,50 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
       aria-label={`Modo concentración de entrenamiento: ${activeRoutine.focusTitle}`}
       className="fixed inset-0 z-50 bg-slate-950/98 backdrop-blur-md text-slate-100 flex flex-col overflow-y-auto lg:overflow-hidden"
     >
-      <div className="max-w-7xl w-full h-full mx-auto px-6 py-5 flex flex-col gap-5 min-h-0">
+      <div className="max-w-7xl w-full lg:h-full mx-auto px-3 sm:px-6 py-3 sm:py-5 flex flex-col gap-3 sm:gap-5 min-h-0">
         {/* Compact Modal Header: Routine Title, Current Exercise & Close Modal Button */}
-        <header className="bg-slate-900/90 border border-slate-800 rounded-2xl px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 shrink-0">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="px-3 py-1 rounded-xl bg-emerald-500 text-slate-950 font-mono text-sm font-black shrink-0">
+        <header className="bg-slate-900/90 border border-slate-800 rounded-2xl px-3.5 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between gap-2.5 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+            <span className="px-2.5 py-1 rounded-xl bg-emerald-500 text-slate-950 font-mono text-xs sm:text-sm font-black shrink-0">
               {currentExercise.code}
             </span>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] truncate">
+                <span className="font-bold uppercase tracking-wider text-emerald-400 truncate">
                   {activeRoutine.dayName} · {activeRoutine.focusTitle}
                 </span>
-                <span className="text-slate-600">•</span>
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-slate-600 hidden sm:inline">•</span>
+                <span className="font-mono text-slate-400 hidden sm:inline truncate">
                   {currentExercise.postureLabel} ({currentExercise.dumbbellLoadLabel})
                 </span>
               </div>
-              <h2 className="text-lg font-bold text-slate-100 truncate">
+              <h2 className="text-sm sm:text-lg font-bold text-slate-100 truncate">
                 {currentExercise.name}
               </h2>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-center">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 block">
-                Serie Actual
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            <div className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-center">
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block">
+                Serie
               </span>
-              <span className="text-base font-mono font-extrabold text-slate-100">
-                {currentSetNumber}{' '}
-                <span className="text-slate-500 text-xs">
-                  / {currentPrescription.sets}
+              <span className="text-xs sm:text-base font-mono font-extrabold text-slate-100">
+                {currentSetNumber}
+                <span className="text-slate-500 text-[10px] sm:text-xs">
+                  /{currentPrescription.sets}
                 </span>
               </span>
             </div>
 
-            <div className="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-center">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 block">
-                Repetición
+            <div className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-center">
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block">
+                Rep
               </span>
-              <span className="text-base font-mono font-extrabold text-emerald-400">
-                {currentRepNumber}{' '}
-                <span className="text-slate-500 text-xs">
-                  / {currentPrescription.reps}
+              <span className="text-xs sm:text-base font-mono font-extrabold text-emerald-400">
+                {currentRepNumber}
+                <span className="text-slate-500 text-[10px] sm:text-xs">
+                  /{currentPrescription.reps}
                 </span>
               </span>
             </div>
@@ -601,22 +601,22 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
             <button
               type="button"
               onClick={onCloseModal}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
               title="Salir del modo entrenamiento (Esc)"
             >
               <X className="w-4 h-4" />
-              <span>Salir</span>
+              <span className="hidden sm:inline">Salir</span>
             </button>
           </div>
         </header>
 
-        {/* Main Zero-Scroll 12-Column Modal Grid */}
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* Main Modal Grid: clean vertical stack on mobile, 12-column zero-scroll split on desktop */}
+        <div className="lg:flex-1 lg:min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-6 items-stretch pb-4 lg:pb-0">
           {/* LEFT 7 COLUMNS: 1. Temporizador & Controles + 2. Animación Centrada del Ejercicio */}
-          <div className="lg:col-span-7 flex flex-col gap-6 min-h-0">
+          <div className="lg:col-span-7 flex flex-col gap-3.5 sm:gap-6 lg:min-h-0">
             {/* 1. TEMPORIZADOR Y FASE ACTIVA */}
             <div
-              className={`rounded-2xl p-6 border-2 transition-colors flex flex-col justify-between gap-4 shrink-0 ${
+              className={`rounded-2xl p-4 sm:p-6 border-2 transition-colors flex flex-col justify-between gap-3 sm:gap-4 shrink-0 ${
                 phase === 'concentric'
                   ? 'bg-emerald-950/35 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.18)]'
                   : phase === 'eccentric'
@@ -628,21 +628,21 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
             >
               {/* Phase Specific Display */}
               {phase === 'prepare' && (
-                <div className="flex flex-col items-center text-center gap-2.5">
-                  <span className="px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[11px] font-bold uppercase tracking-widest">
-                    Preparación Inicial (Solo 1.er Ejercicio) · Ubícate con tus Mancuernas
+                <div className="flex flex-col items-center text-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
+                    Preparación Inicial (1.er Ejercicio)
                   </span>
-                  <div className="text-3xl sm:text-4xl font-black tracking-tight text-sky-400 font-mono">
-                    ¡PREPÁRATE EN POSICIÓN! — {prepareSecondsRemaining}s
+                  <div className="text-xl sm:text-4xl font-black tracking-tight text-sky-400 font-mono">
+                    ¡UBÍCATE EN POSICIÓN! — {prepareSecondsRemaining}s
                   </div>
-                  <p className="text-xs text-slate-200">
+                  <p className="text-[11px] sm:text-xs text-slate-200">
                     Colócate{' '}
                     <strong className="text-emerald-400">
                       {currentExercise.postureLabel.toLowerCase()}
                     </strong>{' '}
                     y toma tus mancuernas ({currentExercise.dumbbellLoadLabel}).
                   </p>
-                  <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-sky-500/40">
+                  <div className="w-full bg-slate-950 h-2.5 sm:h-3 rounded-full overflow-hidden border border-sky-500/40">
                     <div
                       className="h-full bg-sky-500 transition-all duration-75"
                       style={{ width: `${prepareBarPercent}%` }}
@@ -652,14 +652,14 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
               )}
 
               {phase === 'concentric' && (
-                <div className="flex flex-col items-center text-center gap-2.5">
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold uppercase tracking-widest">
+                <div className="flex flex-col items-center text-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
                     Fase Concéntrica · Beep Agudo 880 Hz
                   </span>
-                  <div className="text-3xl sm:text-4xl font-black tracking-tight text-emerald-400">
+                  <div className="text-2xl sm:text-4xl font-black tracking-tight text-emerald-400">
                     ¡SUBE Y APRIETA! - 1s
                   </div>
-                  <div className="w-full bg-slate-950 h-3.5 rounded-full overflow-hidden border border-emerald-500/40">
+                  <div className="w-full bg-slate-950 h-3 sm:h-3.5 rounded-full overflow-hidden border border-emerald-500/40">
                     <div
                       className="h-full bg-emerald-500 transition-all duration-75"
                       style={{
@@ -671,11 +671,11 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
               )}
 
               {phase === 'eccentric' && (
-                <div className="flex flex-col items-center text-center gap-2.5">
-                  <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px] font-bold uppercase tracking-widest">
+                <div className="flex flex-col items-center text-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
                     Fase Excéntrica · 3 Beeps Graves 440 Hz
                   </span>
-                  <div className="text-3xl sm:text-4xl font-black tracking-tight text-amber-400">
+                  <div className="text-2xl sm:text-4xl font-black tracking-tight text-amber-400">
                     BAJA LENTO:{' '}
                     <span
                       className={
@@ -705,7 +705,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                       1...
                     </span>
                   </div>
-                  <div className="w-full bg-slate-950 h-3.5 rounded-full overflow-hidden border border-amber-500/40">
+                  <div className="w-full bg-slate-950 h-3 sm:h-3.5 rounded-full overflow-hidden border border-amber-500/40">
                     <div
                       className="h-full bg-amber-500 transition-all duration-75"
                       style={{ width: `${eccentricBarPercent}%` }}
@@ -715,16 +715,15 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
               )}
 
               {phase === 'rest' && (
-                <div className="flex flex-col items-center text-center gap-2.5">
-                  <span className="px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[11px] font-bold uppercase tracking-widest">
-                    Descanso Entre Series · Siguiente:{' '}
-                    {nextPreviewExercise.code} ({nextPreviewExercise.name}) — Serie{' '}
+                <div className="flex flex-col items-center text-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
+                    Siguiente: {nextPreviewExercise.code} ({nextPreviewExercise.name}) · Serie{' '}
                     {nextPreview.nextSetNumber}/{nextPreview.nextTotalSets}
                   </span>
-                  <div className="text-3xl sm:text-4xl font-black text-sky-400 font-mono">
+                  <div className="text-2xl sm:text-4xl font-black text-sky-400 font-mono">
                     DESCANSO: {restSecondsRemaining}s
                   </div>
-                  <div className="w-full bg-slate-950 h-3.5 rounded-full overflow-hidden border border-sky-500/40">
+                  <div className="w-full bg-slate-950 h-3 sm:h-3.5 rounded-full overflow-hidden border border-sky-500/40">
                     <div
                       className="h-full bg-sky-500 transition-all duration-75"
                       style={{ width: `${restBarPercent}%` }}
@@ -734,40 +733,40 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
               )}
 
               {phase === 'idle' && (
-                <div className="flex flex-col items-center text-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-[11px] font-bold uppercase tracking-wider">
+                <div className="flex flex-col items-center text-center gap-1.5">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
                     {currentExerciseIdx === 0 && currentSetNumber === 1
-                      ? 'Incluye 10s iniciales para ubicarte y tomar las mancuernas'
+                      ? 'Incluye 10s iniciales para ubicarte'
                       : `Listo para Serie ${currentSetNumber} (${currentPrescription.reps} reps)`}
                   </span>
-                  <div className="text-2xl font-bold text-slate-100">
+                  <div className="text-base sm:text-2xl font-bold text-slate-100">
                     {currentExerciseIdx === 0 && currentSetNumber === 1
-                      ? 'Pulsa "Iniciar Rutina (10s Prep)" para comenzar'
-                      : 'Pulsa "Iniciar Serie" para activar el metrónomo 1s / 3s'}
+                      ? 'Pulsa "Iniciar (10s Prep)" para comenzar'
+                      : 'Pulsa "Iniciar Serie" para activar el ritmo 1s / 3s'}
                   </div>
                 </div>
               )}
 
               {phase === 'completed' && (
-                <div className="flex flex-col items-center text-center gap-2">
-                  <div className="flex items-center gap-2 text-2xl font-black text-emerald-400">
-                    <CheckCircle2 className="w-7 h-7" />
-                    <span>¡RUTINA COMPLETADA Y GUARDADA!</span>
+                <div className="flex flex-col items-center text-center gap-1.5">
+                  <div className="flex items-center gap-2 text-lg sm:text-2xl font-black text-emerald-400">
+                    <CheckCircle2 className="w-6 h-6" />
+                    <span>¡RUTINA COMPLETADA!</span>
                   </div>
                   <p className="text-xs text-slate-300">
                     {completedSetsCounter} series y {completedRepsCounter}{' '}
-                    repeticiones registradas en tu historial.
+                    repeticiones guardadas.
                   </p>
                 </div>
               )}
 
-              {/* Live Action Controls Row */}
-              <div className="flex flex-wrap items-center justify-between gap-2.5 pt-3 border-t border-slate-800/80">
-                <div className="flex flex-wrap items-center gap-2.5">
+              {/* Live Action Controls Row: compact 2-row grid on mobile, inline bar on desktop */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-slate-800/80">
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={() => void handleTogglePause()}
-                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                    className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs transition-all ${
                       isRunning
                         ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
                         : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/20'
@@ -775,15 +774,15 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                   >
                     {isRunning ? (
                       <>
-                        <Pause className="w-4 h-4 fill-current" />
+                        <Pause className="w-3.5 h-3.5 fill-current" />
                         Pausar
                       </>
                     ) : (
                       <>
-                        <Play className="w-4 h-4 fill-current" />
+                        <Play className="w-3.5 h-3.5 fill-current" />
                         {phase === 'idle' || phase === 'completed'
                           ? currentExerciseIdx === 0 && currentSetNumber === 1
-                            ? 'Iniciar Rutina (10s Prep)'
+                            ? 'Iniciar (10s Prep)'
                             : 'Iniciar Serie'
                           : 'Reanudar'}
                       </>
@@ -792,32 +791,35 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => void handleRestartCurrentSet()}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5 text-slate-300" />
-                    Reiniciar Serie
-                  </button>
-
-                  <button
-                    type="button"
                     onClick={() => void handleSkipPhaseOrAdvanceSet()}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-xs font-semibold transition-colors"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-xs font-semibold transition-colors"
                   >
-                    <SkipForward className="w-3.5 h-3.5" />
-                    {phase === 'prepare'
-                      ? 'Saltar Preparación (10s)'
-                      : phase === 'rest'
-                      ? 'Saltar Descanso (20s)'
-                      : 'Completar / Saltar Serie'}
+                    <SkipForward className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate">
+                      {phase === 'prepare'
+                        ? 'Saltar 10s'
+                        : phase === 'rest'
+                        ? 'Saltar 20s'
+                        : 'Saltar Serie'}
+                    </span>
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-end gap-2 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => void handleRestartCurrentSet()}
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
+                    title="Reiniciar serie actual"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 text-slate-300" />
+                    <span>Reiniciar</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setIsMuted((m) => !m)}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border text-xs font-semibold transition-colors ${
+                    className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition-colors ${
                       isMuted
                         ? 'bg-rose-950/40 border-rose-500/40 text-rose-300'
                         : 'bg-slate-800 border-slate-700 text-emerald-400 hover:bg-slate-700'
@@ -826,12 +828,12 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                     {isMuted ? (
                       <>
                         <VolumeX className="w-3.5 h-3.5" />
-                        Silenciado
+                        <span>Mudo</span>
                       </>
                     ) : (
                       <>
                         <Volume2 className="w-3.5 h-3.5" />
-                        Audio
+                        <span>Audio</span>
                       </>
                     )}
                   </button>
@@ -840,32 +842,34 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleFinishEntireSession()}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors"
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors"
                       title="Terminar y guardar sesión"
                     >
                       <FastForward className="w-3.5 h-3.5" />
-                      Guardar
+                      <span>Fin</span>
                     </button>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* 2. EL EJERCICIO Y SU ANIMACIÓN VECTORIAL CENTRADA (SIN SCROLL) */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 flex-1 min-h-0 flex flex-col justify-between gap-3">
+            {/* 2. EL EJERCICIO Y SU ANIMACIÓN VECTORIAL CENTRADA */}
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-6 lg:flex-1 lg:min-h-0 flex flex-col justify-between gap-2.5 sm:gap-3 shrink-0">
               <div className="flex items-center justify-between gap-2 shrink-0">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
-                  {phase === 'rest'
-                    ? `Vista Previa Siguiente: ${displayedExercise.code} — ${displayedExercise.name}`
-                    : `Ejecución Sincronizada: ${displayedExercise.code} — ${displayedExercise.name}`}
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5 truncate">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span className="truncate">
+                    {phase === 'rest'
+                      ? `Siguiente: ${displayedExercise.code} — ${displayedExercise.name}`
+                      : `${displayedExercise.code} — ${displayedExercise.name}`}
+                  </span>
                 </span>
-                <span className="text-xs font-mono text-slate-400 hidden sm:inline">
+                <span className="text-[11px] font-mono text-slate-400 hidden md:inline shrink-0">
                   {displayedExercise.tempoNote}
                 </span>
               </div>
 
-              <div className="flex-1 min-h-0 flex items-center justify-center">
+              <div className="lg:flex-1 lg:min-h-0 flex items-center justify-center">
                 <ExerciseAnimationSVG
                   exerciseId={displayedExercise.id}
                   phase={phase}
@@ -875,27 +879,27 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                       : currentContractionProgress
                   }
                   autoAnimate={phase === 'rest' || phase === 'prepare'}
-                  className="h-full max-h-full"
+                  className="w-full lg:h-full max-h-52 sm:max-h-64 lg:max-h-full"
                 />
               </div>
             </div>
           </div>
 
           {/* RIGHT 5 COLUMNS: 3. Siguientes Ejercicios + 4. Músculos que se Ejercitan */}
-          <div className="lg:col-span-5 flex flex-col gap-6 min-h-0">
+          <div className="lg:col-span-5 flex flex-col gap-3.5 sm:gap-6 lg:min-h-0">
             {/* 3. SIGUIENTES EJERCICIOS EN LA SESIÓN */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 flex-1 min-h-0 flex flex-col gap-3">
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-6 lg:flex-1 lg:min-h-0 flex flex-col gap-2.5 sm:gap-3 shrink-0">
               <div className="flex items-center justify-between shrink-0">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                  Siguientes Ejercicios ({currentExerciseIdx + 1} de{' '}
+                  Siguientes Ejercicios ({currentExerciseIdx + 1}/
                   {exercisesQueue.length})
                 </h3>
                 <span className="text-xs font-mono text-emerald-400">
-                  {completedSetsCounter} series completadas
+                  {completedSetsCounter} series hechas
                 </span>
               </div>
 
-              <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col gap-2">
+              <div className="max-h-48 lg:max-h-none lg:flex-1 lg:min-h-0 overflow-y-auto pr-1 flex flex-col gap-2">
                 {exercisesQueue.map((item, idx) => {
                   const ex = getExerciseById(item.exerciseId);
                   const isCurrent = idx === currentExerciseIdx;
@@ -914,7 +918,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                         setPhase('idle');
                         setIsRunning(false);
                       }}
-                      className={`w-full text-left px-3.5 py-2.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+                      className={`w-full text-left px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl border transition-all flex items-center justify-between gap-2.5 ${
                         isCurrent
                           ? 'bg-emerald-500/15 border-emerald-500/70'
                           : isDone
@@ -922,7 +926,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                           : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
                       }`}
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <span
                           className={`px-2 py-0.5 rounded-lg font-mono text-xs font-bold shrink-0 ${
                             isCurrent
@@ -939,8 +943,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                             {ex.name}
                           </div>
                           <div className="text-[11px] text-slate-400 truncate">
-                            {item.sets} series × {item.reps} reps ·{' '}
-                            {ex.postureLabel}
+                            {item.sets} × {item.reps} reps · {ex.postureLabel}
                           </div>
                         </div>
                       </div>
@@ -953,7 +956,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                         </span>
                       ) : (
                         <span className="text-[10px] font-mono text-slate-500 shrink-0">
-                          SIGUIENTE
+                          COLA
                         </span>
                       )}
                     </button>
@@ -963,12 +966,12 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
             </div>
 
             {/* 4. MÚSCULOS QUE SE EJERCITAN */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shrink-0 flex flex-col gap-3">
-              <div className="flex items-center justify-between">
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-6 shrink-0 flex flex-col gap-2.5 sm:gap-3">
+              <div className="flex items-center justify-between gap-2">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                  Músculos que se Ejercitan ({displayedExercise.code})
+                  Músculos ({displayedExercise.code})
                 </h3>
-                <span className="text-[11px] text-emerald-400 font-semibold truncate max-w-[220px]">
+                <span className="text-[11px] text-emerald-400 font-semibold truncate">
                   {displayedExercise.primaryMusclesLabel}
                 </span>
               </div>
