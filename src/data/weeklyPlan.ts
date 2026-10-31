@@ -136,11 +136,15 @@ export function calculateRoutineMetrics(routine: DayRoutine): {
   let totalReps = 0;
   let estimatedTotalSeconds = 0;
 
-  for (const item of routine.exercises) {
+  for (let i = 0; i < routine.exercises.length; i++) {
+    const item = routine.exercises[i];
     totalSets += item.sets;
     totalReps += item.sets * item.reps;
     const workSecondsPerSet = item.reps * 4;
-    estimatedTotalSeconds += item.sets * (workSecondsPerSet + item.restSeconds);
+    const intraSetRest = Math.max(0, item.sets - 1) * item.restSeconds;
+    const interExerciseRest = i < routine.exercises.length - 1 ? 25 : 0;
+    estimatedTotalSeconds +=
+      item.sets * workSecondsPerSet + intraSetRest + interExerciseRest;
   }
 
   return {

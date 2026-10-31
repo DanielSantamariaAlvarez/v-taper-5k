@@ -34,7 +34,8 @@ import { AnatomyMuscleMapSVG } from '../svg/AnatomyMuscleMapSVG';
 
 // Duration of the initial positioning countdown (10 seconds, ONLY before the 1st exercise)
 const INITIAL_PREPARE_DURATION_MS = 10000;
-
+// Rest duration when transitioning from the last set of one exercise to the 1st set of the next exercise
+const EXERCISE_TRANSITION_REST_SECONDS = 25;
 export interface ActiveWorkoutViewProps {
   selectedDayIndex: number;
   overrideExerciseId: ExerciseId | null;
@@ -137,6 +138,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
   );
   const [repElapsedMs, setRepElapsedMs] = useState<number>(0);
   const [restRemainingMs, setRestRemainingMs] = useState<number>(20000);
+  const [activeRestTotalMs, setActiveRestTotalMs] = useState<number>(20000);
   const [completedSetsCounter, setCompletedSetsCounter] = useState<number>(0);
   const [completedRepsCounter, setCompletedRepsCounter] = useState<number>(0);
   const [sessionElapsedSeconds, setSessionElapsedSeconds] = useState<number>(0);
@@ -178,6 +180,7 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
     setCurrentRepNumber(1);
     setRepElapsedMs(0);
     setRestRemainingMs(20000);
+    setActiveRestTotalMs(20000);
     setCompletedSetsCounter(0);
     setCompletedRepsCounter(0);
     setSessionElapsedSeconds(0);
@@ -300,15 +303,22 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
     setCompletedSetsCounter(newSetsTotal);
     setCompletedRepsCounter(newRepsTotal);
 
+    const isLastSetOfCurrentExercise =
+      currentSetNumber >= currentPrescription.sets;
     const isLastSetOfLastExercise =
       currentExerciseIdx === exercisesQueue.length - 1 &&
-      currentSetNumber >= currentPrescription.sets;
+      isLastSetOfCurrentExercise;
 
     if (isLastSetOfLastExercise) {
       handleFinishEntireSession(newSetsTotal, newRepsTotal);
     } else {
+      const restSec = isLastSetOfCurrentExercise
+        ? EXERCISE_TRANSITION_REST_SECONDS
+        : currentPrescription.restSeconds;
+      const restMs = restSec * 1000;
       setPhase('rest');
-      setRestRemainingMs(currentPrescription.restSeconds * 1000);
+      setActiveRestTotalMs(restMs);
+      setRestRemainingMs(restMs);
       lastBeepKeyRef.current = 'rest-start';
       playRestStartBell(isMuted);
     }
@@ -428,18 +438,25 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
           setCompletedSetsCounter(newSets);
           setCompletedRepsCounter(newReps);
 
+          const isLastSetOfCurrentExercise =
+            currentSetNumber >= currentPrescription.sets;
           const isFinalSetOfSession =
             currentExerciseIdx === exercisesQueue.length - 1 &&
-            currentSetNumber >= currentPrescription.sets;
+            isLastSetOfCurrentExercise;
 
           if (isFinalSetOfSession) {
             handleFinishEntireSession(newSets, newReps);
             return 0;
           }
 
-          // Enter 20-second Rest Phase
+          // Enter Rest Phase (25s when switching to a new exercise, 20s between sets of the same exercise)
+          const restSec = isLastSetOfCurrentExercise
+            ? EXERCISE_TRANSITION_REST_SECONDS
+            : currentPrescription.restSeconds;
+          const restMs = restSec * 1000;
           setPhase('rest');
-          setRestRemainingMs(currentPrescription.restSeconds * 1000);
+          setActiveRestTotalMs(restMs);
+          setRestRemainingMs(restMs);
           lastBeepKeyRef.current = 'rest-start';
           playRestStartBell(isMuted);
           return 0;
@@ -522,16 +539,12 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
       ? Math.max(0, Math.min(100, ((4000 - repElapsedMs) / 3000) * 100))
       : 100;
 
-  // Rest countdown in whole seconds (20..1)
+  // Rest countdown in whole seconds (20s between sets, 25s when changing exercise)
   const restSecondsRemaining = Math.max(0, Math.ceil(restRemainingMs / 1000));
   const restBarPercent = Math.max(
     0,
-    Math.min(
-      100,
-      (restRemainingMs / (currentPrescription.restSeconds * 1000)) * 100
-    )
+    Math.min(100, (restRemainingMs / Math.max(1000, activeRestTotalMs)) * 100)
   );
-
   const nextPreview = resolveNextSetPreviewInfo(
     exercisesQueue,
     currentExerciseIdx,
@@ -573,39 +586,19 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            <div className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-center">
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block">
-                Serie
-              </span>
-              <span className="text-xs sm:text-base font-mono font-extrabold text-slate-100">
-                {currentSetNumber}
-                <span className="text-slate-500 text-[10px] sm:text-xs">
-                  /{currentPrescription.sets}
-                </span>
-              </span>
-            </div>
-
-            <div className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-center">
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block">
-                Rep
-              </span>
-              <span className="text-xs sm:text-base font-mono font-extrabold text-emerald-400">
-                {currentRepNumber}
-                <span className="text-slate-500 text-[10px] sm:text-xs">
-                  /{currentPrescription.reps}
-                </span>
-              </span>
-            </div>
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <span className="hidden md:inline-flex items-center px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300">
+              Descanso: 20s serie · 25s cambio
+            </span>
 
             <button
               type="button"
               onClick={onCloseModal}
-              className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
               title="Salir del modo entrenamiento (Esc)"
             >
               <X className="w-4 h-4" />
-              <span className="hidden sm:inline">Salir</span>
+              <span>Salir</span>
             </button>
           </div>
         </header>
@@ -626,6 +619,37 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                   : 'bg-slate-900/90 border-slate-800'
               }`}
             >
+              {/* GIANT DISTANCE-READABLE SCOREBOARD: SERIE ACTUAL & REPETICIÓN ACTUAL */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="bg-slate-950/90 border border-slate-800 rounded-2xl px-3 py-2.5 sm:px-5 sm:py-3 flex flex-col items-center justify-center text-center">
+                  <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-slate-400">
+                    Serie Actual
+                  </span>
+                  <div className="mt-0.5 flex items-baseline gap-1 font-mono leading-none">
+                    <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-white">
+                      {currentSetNumber}
+                    </span>
+                    <span className="text-lg sm:text-2xl font-bold text-slate-500">
+                      / {currentPrescription.sets}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bg-slate-950/90 border border-emerald-500/40 rounded-2xl px-3 py-2.5 sm:px-5 sm:py-3 flex flex-col items-center justify-center text-center shadow-inner">
+                  <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-emerald-400">
+                    Repetición
+                  </span>
+                  <div className="mt-0.5 flex items-baseline gap-1 font-mono leading-none">
+                    <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-emerald-400">
+                      {currentRepNumber}
+                    </span>
+                    <span className="text-lg sm:text-2xl font-bold text-slate-500">
+                      / {currentPrescription.reps}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               {/* Phase Specific Display */}
               {phase === 'prepare' && (
                 <div className="flex flex-col items-center text-center gap-2">
@@ -717,11 +741,14 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
               {phase === 'rest' && (
                 <div className="flex flex-col items-center text-center gap-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
-                    Siguiente: {nextPreviewExercise.code} ({nextPreviewExercise.name}) · Serie{' '}
-                    {nextPreview.nextSetNumber}/{nextPreview.nextTotalSets}
+                    {nextPreview.isNewExercise
+                      ? `Cambio de Ejercicio (25s) · Siguiente: ${nextPreviewExercise.code} (${nextPreviewExercise.name})`
+                      : `Descanso Entre Series (20s) · Siguiente: Serie ${nextPreview.nextSetNumber}/${nextPreview.nextTotalSets}`}
                   </span>
                   <div className="text-2xl sm:text-4xl font-black text-sky-400 font-mono">
-                    DESCANSO: {restSecondsRemaining}s
+                    {nextPreview.isNewExercise
+                      ? `CAMBIO DE EJERCICIO: ${restSecondsRemaining}s`
+                      : `DESCANSO: ${restSecondsRemaining}s`}
                   </div>
                   <div className="w-full bg-slate-950 h-3 sm:h-3.5 rounded-full overflow-hidden border border-sky-500/40">
                     <div
@@ -799,12 +826,11 @@ export const ActiveWorkoutView: React.FC<ActiveWorkoutViewProps> = ({
                       {phase === 'prepare'
                         ? 'Saltar 10s'
                         : phase === 'rest'
-                        ? 'Saltar 20s'
+                        ? `Saltar ${Math.round(activeRestTotalMs / 1000)}s`
                         : 'Saltar Serie'}
                     </span>
                   </button>
                 </div>
-
                 <div className="flex items-center justify-end gap-2 w-full sm:w-auto">
                   <button
                     type="button"
